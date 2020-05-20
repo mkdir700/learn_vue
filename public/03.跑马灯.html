@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1 v-text="msg"></h1>
+    <button @click="lang">开启</button>
+    <button @click="stop">停止</button>
+</div>
+<script>
+    var vm;
+    vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '我是一段测试跑马灯',
+            intervalId: null,
+        },
+        methods: {
+            lang () {
+                this.intervalId = setInterval(()=>{
+                    // console.log(this.msg);
+                    // 获取第一个字符
+                    var start = this.msg.substring(0, 1)
+                    var end = this.msg.substring(1)
+                    this.msg = end + start;
+                    // vm会监听自身data的改变,自身改变,更正html中的数据也跟着改变
+                }, 200)
+            },
+            stop () {
+                clearInterval(this.intervalId);
+            }
+        }
+    });
+</script>
+</body>
+</html>

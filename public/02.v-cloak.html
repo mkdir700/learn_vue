@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-cloak的学习</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!--  v-cloak 可以解决插值表达式闪烁的问题 可以拼接其他内容 -->
+    <p v-cloak>+++{{msg}}----</p>
+    <!--  v-text 默认v-text 没有闪烁问题 此位置只显示msg内容，不能拼接 -->
+    <h2 v-text="msg">1111111111</h2>
+    <!--  v-html 解析出html -->
+    <div v-html="msg2"></div>
+    <!--  解析为纯文本  -->
+    {{msg2}}
+    <!--  v-bind 是vue中，提供用于绑定属性的指令  -->
+    <input type="button" value="按钮" v-bind:title="title+'123'">
+    <!--  简写格式 v-bind中可以写js合法的表达式 -->
+    <input type="button" value="按钮" :title="title+'123'">
+</div>
+<script>
+    var vm = new Vue({
+        el: '.app',
+        data: {
+            msg: '123',
+            msg2: '<h1>h1</h1>',
+            title: '我是一个title'
+        }
+    });
+
+</script>
+</body>
+</html>
