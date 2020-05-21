@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <!--bind只能进行单向数据绑定-->
+    <input v-bind:value="msg" type="text">
+
+    <!--单行内容-->
+    <input v-model="msg" type="text" placeholder="输入你的内容">
+    <p>你输入的内容是: {{msg}}</p>
+
+    <!--多行内容-->
+    <textarea v-model="msg" cols="30" rows="10"></textarea>
+    <p>多行内容: {{msg}}</p>
+
+    <!--复选框-->
+    <label for="checkbox"></label>{{checked}}
+    <input type="checkbox" id="checkbox" v-model="checked">
+
+    <!--多选框-->
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames }}</span>
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '1234',
+            checked: false,
+            checkedNames: [],
+        },
+        methods: {
+
+        }
+    })
+</script>
+</body>
+</html>

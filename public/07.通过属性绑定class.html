@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .container {
+            width: 300px;
+            height: 200px;
+        }
+
+        .font-big {
+            font-size: 30px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <!--red是一个变量,会去data里面查找, data里可以写css样式-->
+    <p :class="red">我是一段测试文字</p>
+
+    <!--传入一个数组, 在其中类名使用字符串形式-->
+    <p :class="['font-big']">我是第二段测试文字</p>
+
+    <!--可以在数组中使用三元表达式 显示为蓝色-->
+    <p :class="[active ? 'red':'blue']">我是第三段测试文字</p>
+
+    <!--在数组中使用对象来代替 三元表达式 flag为真时,font-big会被激活-->
+    <p :class="[{'font-big': flag}]">我是第三段测试文字</p>
+
+    <!--直接使用对象-->
+    <p :class="[{'font-big': true, blue: true}]">我是第三段测试文字</p>
+
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            red: 'color: red',
+            active: false,
+            flag: true,
+        },
+
+    })
+</script>
+</body>
+</html>

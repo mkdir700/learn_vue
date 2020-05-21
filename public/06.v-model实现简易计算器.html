@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="n1">
+    <select v-model="selected">
+        <option disabled value="">请选择</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+        <option value="+">+</option>
+        <option value="-">-</option>
+    </select>
+    <input type="text" v-model="n2">
+    <button @click="counter">计算</button>
+    <p>{{result}}</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            n1: null,
+            n2: null,
+            selected: null,
+            result: null,
+        },
+        methods: {
+            counter() {
+                if (this.selected === '*') {
+                    this.result = this.n1 * this.n2;
+                } else if (this.selected === '/') {
+                    this.result = this.n1 / this.n2;
+                } else if (this.selected === '+') {
+                    this.result = Number(this.n1) + Number(this.n2);
+                } else if (this.selected === '-') {
+                    this.result = this.n1 - this.n2;
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

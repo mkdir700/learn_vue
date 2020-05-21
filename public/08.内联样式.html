@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--直接在{}中写css代码-->
+    <p :style="{'color': 'red'}">xxxxxxxxxxxxxxxxxxxxxx</p>
+
+    <!--通过对象传入-->
+    <p :style="styleObj1">xxxxxxxxxxxxxxxxxxxxxx</p>
+
+    <!--通过数将样式传入-->
+    <p :style="[{'color': 'red'}, styleObj, styleObj1]">xxxxxxxxxxxxxxxxxxxxxx</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            styleObj: {'font-size': '30px'},
+            styleObj1: {'text-align': 'center', 'border': '1px solid #ccc'},
+        }
+    })
+</script>
+</body>
+</html>
