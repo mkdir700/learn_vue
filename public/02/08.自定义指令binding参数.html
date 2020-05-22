@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="panel">
+            <div class="panel-heading">添加数据</div>
+            <div class="panel-body form-inline">
+                <label for="id">Id</label>
+                <input class="form-control" type="text" id="id" v-model="id">
+                <label for="name">Name</label>
+                <input class="form-control" type="text" id="name" v-model="name" @keypress.enter="addInstance">
+                <input class="btn btn-default" type="button" value="提交" @click="addInstance">
+                <label for="keyword">搜索关键字</label>
+                <input type="text" class="form-control" id="keyword" v-model="keyword" v-focus v-color="'blue'">
+                <input type="button" class="btn-info" value="搜索" @click="search">
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in search(keyword)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.time | timeFormat}}</td>
+            <td><a href="" @click.prevent="deleteInstance(item.id)">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    Vue.filter('timeFormat', function (dateStr) {
+        let dt = new Date(dateStr)
+        let year = dt.getFullYear()
+        let month = dt.getMonth()
+        let day = dt.getDay()
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+    })
+
+    /*自定义键盘码*/
+    Vue.config.keyCodes.f1 = 112
+
+    /*自定义全局指令, 自定义的指令名称不需要加"v-"前缀,但是在调用时需要加上
+    * 和js行为有关的,最好在inserted中
+    * */
+    Vue.directive('focus', {
+        // 当被绑定的元素插入到DOM时...
+        inserted: function (el) {
+            // 聚焦元素
+            el.focus()
+        }
+    })
+
+    /*样式只要通过指令绑定给元素,不管有没有插入到页面中去,这个元素肯定有一个内联的样式
+    * 和样式相关的操作,一般都可以在bind中
+    * */
+    Vue.directive('color', {
+        bind: function (el, binding) {
+            el.style.color = binding.value;
+        }
+    })
+
+    /*除了inserted还有
+    bind: 只调用一次,指令第一次绑定到元素时调用,在这里进一次性的初始化设置
+    update: 所在组件的VNode更新时调用,但是可能发生在其子VNode更新之前.指令的值可能发生变换,也可能没有,但是你可以
+    通过比较更新前后的值来忽略不必要的模板更新
+    inserted: 被绑定元素插入父节点时调用(仅保证父节点存在时,但不一定已被插入文档中)
+    */
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                {"id": 1, "name": "奔驰", "time": new Date()},
+                {"id": 2, "name": "宝马", "time": new Date()},
+                {"id": 3, "name": "马萨拉蒂", "time": new Date()},
+            ],
+            id: '',
+            name: '',
+            keyword: ''
+        },
+        methods: {
+            addInstance() {
+                this.list.push({
+                    id: this.id,
+                    name: this.name,
+                    time: new Date(),
+                });
+            },
+            deleteInstance(id) {
+                /*findIndex 当内部满足条件返回true时,会返回其满足条件的索引值*/
+                let index = this.list.findIndex((item, i)=>{
+                    if (item.id===id) {
+                        return true;
+                    }
+                })
+                this.list.splice(index, 1);
+            },
+            search(keyword) {
+                let newList = [];
+                this.list.filter(item => {
+                    if (item.name.includes(this.keyword)) {
+                        newList.push(item)
+                    }
+                })
+                return newList;
+            }
+        }
+    })
+    /*js原生实现*/
+    // document.getElementById("keyword").focus()
+</script>
+</body>
+</html>

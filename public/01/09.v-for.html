@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--
+    这个循环for 和 python类似
+    for i in item:
+        ....
+    -->
+    <p v-for="m in msg">{{m}}</p>
+
+    <span v-for="i in ['h', 'e', 'l', 'l', 'o']">{{i}}</span>
+
+    <!--循环对象,类似python中的循环遍历字典-->
+    <p v-for="(v, k, i) in dict">键{{k}} 值{{v}} 索引{{i}}</p>
+
+    <!--for迭代数字 注意:从1开始-->
+    <p v-for="i in 10">第 {{i}} 次循环</p>
+
+    <!--v-for 中key属性的使用-->
+
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            msg: [1, 2, 3, 4, 6, 7],
+            dict: {
+                'a': 1,
+                'b': 2,
+                'c': 3,
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--过滤器
+    只能用在插值表达式和v-bind
+    Vue.filter('过滤器名称', function(data){})
+    {{name|过滤器名称}}-->
+    <!--    <p>{{msg | msgFormat}}</p>-->
+
+    <!--向过滤器传入参数-->
+    <p>{{msg | msgFormat('333')}}</p>
+
+    <!--串联过滤器-->
+    <p>{{msg | msgFormat('3') | msgFormat1()}}</p>
+
+    <!--调用本地过滤器-->
+    <p>{{msg | msgFormat2}}</p>
+</div>
+<script>
+    /*全局过滤器*/
+    Vue.filter('msgFormat', function (msg, arg) {
+        return msg.replace(/1/g, arg)
+    })
+    Vue.filter('msgFormat1', function (msg) {
+        return msg + "========"
+    })
+    let vm = new Vue({
+        "el": '#app',
+        "data": {
+            "msg": '11111111111111111111111111',
+        },
+        "methods": {},
+        "filters": {
+            /*你可以在一个组件的选项中定义本地的过滤器：*/
+            "msgFormat2": function (msg) {
+                return msg + '-----------';
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="what">切换</button>
+    <!--v-if 切换消耗大, 在处理数据时,原本就不想要让用户看见,使用if-->
+    <p v-if="toggle">if的测试文字</p>
+    <!--show 初始化消耗大,用于用户实时切换,使用show-->
+    <p v-show="toggle">show的测试文字</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            toggle: true
+        },
+        methods: {
+            what: function () {
+                this.toggle = !this.toggle;
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

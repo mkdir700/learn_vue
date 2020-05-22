@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="panel">
+            <div class="panel-heading">添加数据</div>
+            <div class="panel-body form-inline">
+                <label for="id">Id</label>
+                <input class="form-control" type="text" id="id" v-model="id">
+                <label for="name">Name</label>
+                <input class="form-control" type="text" id="name" v-model="name">
+                <input class="btn btn-default" type="button" value="提交" @click="addInstance">
+                <label for="keyword">搜索关键字</label>
+                <input type="text" class="form-control" id="keyword" v-model="keyword">
+                <input type="button" class="btn-info" value="搜索" @click="search">
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in search(keyword)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.time | timeFormat}}</td>
+            <td><a href="" @click.prevent="deleteInstance(item.id)">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    Vue.filter('timeFormat', function (dateStr) {
+        let dt = new Date(dateStr)
+        let year = dt.getFullYear()
+        let month = dt.getMonth()
+        let day = dt.getDay()
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+    })
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                {"id": 1, "name": "奔驰", "time": new Date()},
+                {"id": 2, "name": "宝马", "time": new Date()},
+                {"id": 3, "name": "马萨拉蒂", "time": new Date()},
+            ],
+            id: '',
+            name: '',
+            keyword: ''
+        },
+        methods: {
+            addInstance() {
+                this.list.push({
+                    id: this.id,
+                    name: this.name,
+                    time: new Date(),
+                });
+            },
+            deleteInstance(id) {
+
+                /*some满足条件即退出*/
+                // this.list.some((item, i) => {
+                //     if (item.id === id) {
+                //         this.list.splice(i, 1);
+                //         return true;
+                //     }
+                // }
+
+                /*findIndex 当内部满足条件返回true时,会返回其满足条件的索引值*/
+                let index = this.list.findIndex((item, i)=>{
+                    if (item.id===id) {
+                        return true;
+                    }
+                })
+                this.list.splice(index, 1);
+            },
+            search(keyword) {
+                let newList = [];
+                // this.list.forEach(item => {
+                //     if (item.name.indexOf(this.keyword) !== -1) {
+                //         newList.push(item)
+                //     }
+                // });
+                this.list.filter(item => {
+                    if (item.name.includes(this.keyword)) {
+                        newList.push(item)
+                    }
+                })
+                return newList;
+            }
+        }
+    })
+</script>
+</body>
+</html>
