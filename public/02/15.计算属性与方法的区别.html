@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{msg}}</p>
+    <!--使用计算属性,在第一次使用后会有缓存-->
+    <p>{{reverseString}}</p>
+    <p>{{reverseString}}</p>
+    <p v-text="reverseStringFunction()"></p>
+    <p v-text="reverseStringFunction()"></p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            msg: "NiO"
+        },
+        methods: {
+            reverseStringFunction() {
+                /*此函数在上方被执行了两次,则输出语句会输出两次*/
+                console.log('methods')
+                return this.msg.split("").reverse().join("");
+            }
+        },
+        /*计算属性*/
+        computed: {
+            reverseString() {
+                /*上方使用两次,这里只会打印第一次的,这就是缓存*/
+                console.log('computed')
+                return this.msg.split("").reverse().join("");
+            }
+        }
+    })
+</script>
+</body>
+</html>

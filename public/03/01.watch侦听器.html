@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<!--数据变化时执行异步或开销较大的操作-->
+<div id="app">
+    <input type="text" v-model="firstName">
+    <input type="text" v-model="lastName">
+    <p>{{fullName}}</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            firstName: 'Jim',
+            lastName: 'Water',
+            fullName: 'Jim Water',
+        },
+        watch: {
+            /*对指定属性进行监听,如果此发生变换,则执行对应的函数*/
+            firstName(value) {
+                this.fullName = value + this.lastName
+            },
+            lastName: function (value) {
+                this.fullName = this.firstName + value
+            }
+        }
+    })
+</script>
+</body>
+</html>

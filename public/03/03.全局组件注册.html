@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--组件的使用-->
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <!--组件可以重用-->
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+</div>
+<script>
+    /*组件的注册
+    * 组件的命名方式: 短横线方式,或者大驼峰式
+    * 在html标签使用的话,必须是短横线方式
+    * */
+    Vue.component('button-counter', {
+        /*注意事项: 这里的data 和之前不一样,之类应该是使用函数,return 返回定义数据的对象*/
+        data() {
+            return {
+                count: 0
+            }
+        },
+        methods: {
+            handle() {
+                this.count += 1
+            }
+        },
+        /*注意事项: 组件模板内容必须是单个根元素
+        * 组件模板内容可以是模板字符串*/
+        // template: "<button @click='handle'>你点击了{{count}}次</button>"
+        template: `<button @click='handle'>你点击了{{count}}次</button>`
+    })
+
+    let vm = new Vue({
+        el: "#app",
+        data: {},
+    })
+</script>
+</body>
+</html>

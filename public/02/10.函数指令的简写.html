@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p v-big="'60px'" v-color="'green'">{{msg}}</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            msg: 'Hahahahhaah~~~',
+        },
+        /*定义私有指令,仅在此组件中可用*/
+        directives: {
+            'big': {
+                bind: function (el, binding) {
+                    el.style.fontSize = binding.value;
+                }
+            },
+            /*函数的简写
+            * 在很多时候，你可能想在 bind 和 update 时触发相同行为，而不关心其它的钩子。比如这样写：
+            * 直接写触发的函数
+            * 如果需要inserted就不能简写了
+            * 这个简写相当于写到了 bind和update里面去
+            * 'color': {
+            *   bind: function (el, binding) {
+            *       el.style.color = binding.value;
+            *   },
+            *   update: function (el, binding) {
+            *       el.style.color = binding.value;
+            *   }
+            * }
+            * */
+            'color': function (el, binding) {
+                el.style.color = binding.value;
+            }
+        }
+    })
+</script>
+</body>
+</html>

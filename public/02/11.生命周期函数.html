@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p></p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {},
+        methods: {
+
+        },
+        /*初始化Vue实例的时候,会被执行,此时只会有默认方法*/
+        beforeCreate() {
+
+        },
+        /*此时会注入,我们自己创建的方法,依然处于初始化阶段*/
+        created() {
+
+        },
+
+        /*按照我们所写的方法执行,并生成template模板,此时只是在内存中渲染好模板
+        * 并没有把模板挂载到真正的页面中
+        * */
+
+        /*在模板挂载之前所执行的生命周期函数*/
+        beforeMount() {
+
+        },
+        /*模板挂载到页面之后,所执行的生命周期函数*/
+        mounted() {
+
+        },
+        /*至此,挂载部分就执行完了*/
+
+        /*页面的数据,可能会发生变换,数据发生变化时,页面也会随着变换
+        * 所以当数据发生改变时
+        * */
+        /*在更新数据之前*/
+        beforeUpdate() {
+
+        },
+        /*数据更新完并展示,虚拟DOM重写渲染并应用更新*/
+        updated() {
+
+        },
+
+        /*当调用vm.$destroy()函数时*/
+        /*销毁之前的生命周期函数*/
+        beforeDestroy() {
+
+        },
+        /*解除绑定,销毁子组件以及事件监听器,销毁完毕*/
+        destroyed() {
+
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<!--实现对用户名是否重名
+表单失去焦点的时候,触发校验
+-->
+<div id="app">
+    <label for="username">用户名</label>
+    <input id="username" type="text" v-model.lazy="userName">
+    <!--
+    v-model 知识扩展
+    .lazy - 取代 input 监听 change 事件
+     在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 (除了上述输入法组合文字时)。
+     你可以添加 lazy 修饰符，从而转为在 change 事件_之后_进行同步
+
+    .number - 输入字符串转为有效的数字
+    如果想自动将用户的输入值转为数值类型，可以给 v-model 添加 number 修饰符
+
+    .trim - 输入首尾空格过滤
+    如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符
+
+    -->
+    <span>{{tip}}</span>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            userName: '',
+            tip: ''
+        },
+        /*使用侦听器检测用户名的变换
+        * 如果用户名发生变换,调用后台接口进行验证
+        * 根据验证的结果,调整提示信息
+        * */
+        methods: {
+            checkName(userName) {
+                let x = "admin"
+                /*模拟接口调用*/
+                // let that = this;
+                setTimeout(() => {
+                    if (userName === x) {
+                        this.tip = '用户名已存在'
+                    } else {
+                        this.tip = '用户名有效'
+                    }
+                }, 2000)
+            }
+        },
+        watch: {
+            userName(value) {
+                /*调用后台接口进行验证是否有效*/
+                this.checkName(value);
+                this.tip = '用户名验证中'
+            }
+        }
+    })
+</script>
+</body>
+</html>

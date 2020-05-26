@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--组件的使用
+    局部组件注册,只能在注册他的父组件中使用
+    -->
+    <hello-world></hello-world>
+    <hello-world></hello-world>
+    <hello-vue></hello-vue>
+    <hello-vue></hello-vue>
+</div>
+<script>
+    let HelloWorld = {
+        data() {
+            return {
+                'msg': 'hello world!!'
+            }
+        },
+        template: `<h1>{{msg}}</h1>`
+    }
+
+    let HelloVue = {
+        data() {
+            return {
+                'msg': 'hello vue!!'
+            }
+        },
+        template: `<h2>{{msg}}</h2>`
+    }
+
+    let vm = new Vue({
+        el: "#app",
+        data: {},
+        /*局部组件注册*/
+        components: {
+            'hello-world': HelloWorld,
+            'hello-vue': HelloVue
+        }
+    })
+</script>
+</body>
+</html>

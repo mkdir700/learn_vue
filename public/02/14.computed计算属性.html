@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{msg}}</p>
+    <!--使用计算属性
+    应用场景:
+        将复杂的计算逻辑,抽取出来
+        使用计算属性可以使模板内容更加简洁
+    -->
+    <p>{{reverseString}}</p>
+</div>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            msg: "NiO"
+        },
+        /*计算属性*/
+        computed: {
+            reverseString() {
+                return this.msg.split("").reverse().join("");
+            }
+        }
+    })
+</script>
+</body>
+</html>
