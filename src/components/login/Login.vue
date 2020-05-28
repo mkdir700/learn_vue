@@ -6,7 +6,7 @@
                 <img src="logo.png" alt="">
             </div>
             <!--表单-->
-            <el-form label-width="0px" class="login_form" :model="form" :rules="formRules">
+            <el-form ref="loginFormRef" label-width="0px" class="login_form" :model="form" :rules="formRules">
                 <el-form-item prop="username">
                     <el-input prefix-icon="el-icon-user" v-model="form.username" prop="username"></el-input>
                 </el-form-item>
@@ -16,7 +16,7 @@
                 </el-form-item>
                 <el-form-item class="btns">
                     <el-button type="primary">登录</el-button>
-                    <el-button type="info">重置</el-button>
+                    <el-button type="info" @click="resetForm">重置</el-button>
                 </el-form-item>
             </el-form>
 
@@ -46,6 +46,12 @@
                 }
             }
         },
+        methods: {
+            /*重置表单函数*/
+            resetForm() {
+                this.$refs.loginFormRef.resetFields();
+            }
+        }
     }
 </script>
 
