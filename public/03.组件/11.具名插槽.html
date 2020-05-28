@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <base-layout>
+        <template v-slot:header>
+            <h1>标题</h1>
+        </template>
+        <template v-slot:main>
+            <p>文章内容</p>
+        </template>
+        <template v-slot:footer>
+            <p>底部内容</p>
+        </template>
+    </base-layout>
+</div>
+<script>
+    Vue.component('base-layout', {
+        template: `<div>
+                <header>
+                <slot name="header"></slot>
+                </header>
+                <main>
+                <slot name="main"></slot>
+                </main>
+                <footer>
+                <slot name="footer"></slot>
+                </footer>
+                </div>`
+    })
+
+    let vm = new Vue({
+        el: "#app"
+    })
+</script>
+</body>
+</html>

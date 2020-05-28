@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+<script>
+    /*在url后面跟上一个对象,和post的json类型请求一致*/
+    axios.put('http://locahost/data', {
+        'username': 'zhangsan',
+        'age': 20
+    }).then(res => {
+        console.log()
+    })
+</script>
+</body>
+</html>

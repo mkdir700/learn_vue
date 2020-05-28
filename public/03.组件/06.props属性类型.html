@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--这里的  12  传入的是 Number类型的数据-->
+    <menu-item :title="pmsg" :pstr="12"></menu-item>
+    <!--没有带  : 则传入的是字符串-->
+    <menu-item :title="pmsg" pstr="12"></menu-item>
+
+    <!--布尔 (没有带冒号表示字符串,带有了冒号true表示布尔值)-->
+    <menu-item :pbool="true"></menu-item>
+
+    <!--数组-->
+    <menu-item :parr="parr"></menu-item>
+
+    <!--对象-->
+    <menu-item :pobj="pobj"></menu-item>
+
+</div>
+<script>
+    /*父组件向子组件传值
+    * 在子组件中, 通过props中的属性 [接收] 来自父组件的值
+    * */
+    Vue.component('menu-item', {
+        props: ['title', 'pstr', 'pbool', 'parr', 'pobj'],
+        data() {
+            return {
+                msg: '子组件的数据'
+            }
+        },
+        template: `
+            <div>
+                <h1>{{title}} + {{ 12 + pstr}}</h1>
+                <h1>{{ 12 + pstr}}</h1>
+                <h2>{{typeof pbool}}</h2>
+                <ul>
+                    <li v-for="(item, index) in parr">{{item}}</li>
+                </ul>
+                <strong>{{pobj.uname}} {{pobj.age}}</strong>
+            </div>`
+    })
+
+    let HelloWorld = {
+        data() {
+            return {
+                'msg': 'hello world!!'
+            }
+        },
+        template: `<h1>{{msg}}</h1>`
+    }
+
+    let HelloVue = {
+        data() {
+            return {
+                'msg': 'hello vue!!'
+            }
+        },
+        template: `<h2>{{msg}}</h2>`
+    }
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            'pmsg': '父组件内容',
+            'parr': ['a', 'b', 'c'],
+            'pobj': {
+                'uname': 'wuyuhang',
+                'age': 21
+            }
+        }
+    })
+</script>
+</body>
+</html>

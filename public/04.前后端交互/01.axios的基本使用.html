@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<script>
+    axios.get('http://101.89.182.58:9090/sign').then(result=>{
+        /*data属性是固定用法,用于获取后台的实际数据*/
+        console.log(result.data)
+        console.log(result)
+    })
+</script>
+</body>
+</html>

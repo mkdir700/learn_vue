@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <alert-box>这是一条警告信息</alert-box>
+</div>
+<script>
+
+    /*通过在组件中slot标签 , 用于接收在组件定义时标签中的内容*/
+    Vue.component('alert-box', {
+        /*如果slot中间没有内容,则会接收
+        * 如果有内容,则会显示默认内容
+        * */
+        template: `<div><strong>ERROR: </strong><slot></slot></div>`
+    });
+
+    let vm = new Vue({
+        el: "#app",
+    })
+</script>
+</body>
+</html>

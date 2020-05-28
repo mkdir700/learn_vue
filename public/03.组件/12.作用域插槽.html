@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .current {
+            color: red;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <!--作用于的应用场景:
+    父组件中可以得到子组件中的数据,从而对子组件中的数据进行加工处理
+    -->
+    <fruit-list :list="list">
+        <!--2. template这里 使用v-slot:default="slotProps", 接收来自子组件的数据
+        v-slot: 可以简写为 #
+        slotProps: 参数名字是自定义的
+        default: 子组件没有定义name属性,那么就是default默认
+        -->
+        <template #default="slotProps">
+            <strong v-if="slotProps.item.id===2" class="current">
+            {{slotProps.item.name}}
+            </strong>
+            <span v-else>{{slotProps.item.name}}</span>
+        </template>
+    </fruit-list>
+</div>
+<script>
+    Vue.component('fruit-list', {
+        props: ['list'],
+        /* 1. 子组件中的slot必须绑定一个属性, 属性名自定义的, 其中""中的就是,传入父组件中的数据*/
+        template: `<div>
+            <ul>
+                <li v-for="(item, index) in list" :key="index">
+
+                    <slot :item="item">{{item.name}}</slot>
+                </li>
+            </ul>
+        </div>`
+    })
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            list: [{
+                'id': 1,
+                'name': 'apple'
+            },{
+                'id': 2,
+                'name': 'orange'
+            },{
+                'id': 3,
+                'name': 'banana'
+            }]
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--将值通过属性传递给子组件-->
+    <!--注意事项: 属性名大小写不敏感,所以即便在props中命名是驼峰式,这里
+    也必须是短横线形式的命名-->
+    <menu-item :title="pmsg"></menu-item>
+</div>
+<script>
+    /*父组件向子组件传值
+    * 在子组件中, 通过props中的属性 [接收] 来自父组件的值
+    * */
+    Vue.component('menu-item', {
+        props: ['title'],
+        data() {
+            return {
+                msg: '子组件的数据'
+            }
+        },
+        template: "<h1>{{msg+title}}</h1>"
+    })
+
+    let HelloWorld = {
+        data() {
+            return {
+                'msg': 'hello world!!'
+            }
+        },
+        template: `<h1>{{msg}}</h1>`
+    }
+
+    let HelloVue = {
+        data() {
+            return {
+                'msg': 'hello vue!!'
+            }
+        },
+        template: `<h2>{{msg}}</h2>`
+    }
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            'pmsg': '父组件内容'
+        }
+    })
+</script>
+</body>
+</html>

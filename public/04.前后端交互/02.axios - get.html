@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<script>
+    /*通过?参数名=值&参数名2=值2 的方式传值*/
+    axios.get('http://localhost/data?id=1').then(res => {
+        console.log()
+    })
+
+    /* 通过/分割传值 */
+    axios.get('http://localhost/data/1').then(res => {
+        console.log()
+    })
+
+    /* 通过params传值 */
+    axios.get('', {
+        params: {
+            id: 1
+        }
+    }).then(res => {
+        console.log()
+    })
+</script>
+</body>
+</html>

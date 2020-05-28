@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<script>
+    /*直接在url后面，接一个字典对象
+    * application/json类型
+    * */
+    axios.post('http://localhost/data', {
+        id: 1,
+        name: 'wuyuhang'
+    }).then(res => {
+        console.log()
+    })
+
+    /* 表单类型 application/x-www-form-urlencoded*/
+    let params = new URLSearchParams();
+    params.append('username', 'zhangsan')
+    params.append('age', '20')
+    axios.post('http://localhost/data', params).then(res => {
+        console.log()
+    })
+</script>
+</body>
+</html>

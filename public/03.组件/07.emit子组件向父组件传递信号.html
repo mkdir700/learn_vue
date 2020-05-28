@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <p :style="{fontSize: fontSize+'px'}">父组件的一段文字</p>
+    </div>
+    <!--2. 父组件监听 是否有来自子组件的enlarge-text
+    有的情况下,触发我们填写的方法
+    -->
+    <menu-item :parr="parr" @enlarge-text="enlargeText"></menu-item>
+</div>
+<script>
+    Vue.component('menu-item', {
+        props: ['parr'],
+        template: `
+            <div>
+                <ul>
+                    <li :key="index" v-for="(item, index) in parr">{{item}}</li>
+                </ul>
+                1. 按钮触发时,子组件通过$emit,将触发的信号发送给父组件
+                <button @click="$emit('enlarge-text')">扩大父组件中的字体大小</button>
+            </div>
+        `
+    })
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            'parr': ['Jim', 'Tom', 'Jack'],
+            'fontSize': 14
+        },
+        methods: {
+            enlargeText() {
+            //    扩大字体大小
+                this.fontSize += 2;
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <p :style="{fontSize: fontSize+'px'}">父组件的一段文字</p>
+    </div>
+    <!--由子组件传递过来的值,使用$event接收-->
+    <menu-item :parr="parr" @enlarge-text="enlargeText($event)"></menu-item>
+</div>
+<script>
+    Vue.component('menu-item', {
+        props: ['parr'],
+        template: `
+            <div>
+                <ul>
+                    <li :key="index" v-for="(item, index) in parr">{{item}}</li>
+                </ul>
+                $emit的第二个参数, 用于传递参数
+                <button @click="$emit('enlarge-text', 100)">扩大父组件中的字体大小</button>
+            </div>
+        `
+    })
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            'parr': ['Jim', 'Tom', 'Jack'],
+            'fontSize': 14
+        },
+        methods: {
+            enlargeText(value) {
+                //    扩大字体大小
+                this.fontSize += value;
+            }
+        }
+    })
+</script>
+</body>
+</html>

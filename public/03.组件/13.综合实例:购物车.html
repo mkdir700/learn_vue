@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*.container {*/
+        /*    width: 300px;*/
+        /*    height: 200px;*/
+        /*    background-color: #5bc0de;*/
+        /*    text-align: center;*/
+        /*}*/
+        .title {
+            width: 200px;
+            height: 30px;
+            border: solid #ccc 1px;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="../static/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <my-cart></my-cart>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let CartHeader = {
+        props: ['name'],
+        template: `
+            <div class="title">{{name}}的商品</div>
+        `
+    }
+
+    let CartList = {
+        props: ['list'],
+        template: `
+            <ul class="list-group">
+                <li class="list-group-item" v-for="(item, index) in list" :key="index">
+                    <h3>{{item.name}}</h3>
+                    <label for="price">价格</label>
+                    <input id="price" type="number" v-bind:value="item.price" disabled>
+                    <label for="number">数量</label>
+                    <input id="number" type="number" :value="item.num" @blur="changeNum(item.id, $event)">
+                    <button class="btn btn-danger" @click="deleteItem(index)">删除</button>
+                </li>
+            </ul>
+        `,
+        methods: {
+            /*不推荐在子组件操作父组件的数据,应该把数据传回父组件,由父组件处理*/
+            deleteItem(index) {
+                /*把id传递给父组件*/
+                this.$emit('deleteId', index)
+                // this.list.splice(index, 1);
+            },
+            changeNum(id, event) {
+                console.log(id, event.target.value)
+                this.$emit('changeNum', {'id': id, 'value': event.target.value})
+            }
+        }
+    }
+
+    let CartFooter = {
+        props: ['list'],
+        template: `
+            <div class="total">
+                <span>总价: {{total}}</span>
+                <button class="btn btn-default">结算</button>
+            </div>`,
+        computed: {
+            total() {
+                // 计算商品总价
+                let t = 0;
+                this.list.forEach(item => {
+                    t += item.price * item.num
+                })
+                return t;
+            }
+        }
+    }
+
+    Vue.component('my-cart', {
+        data() {
+            return {
+                'name': '张三',
+                'list': [{
+                    'id': 1,
+                    'name': '小米',
+                    'price': 3000,
+                    'num': 1
+                }, {
+                    'id': 2,
+                    'name': '华为',
+                    'price': 4000,
+                    'num': 1
+                }, {
+                    'id': 3,
+                    'name': 'OPPO',
+                    'price': 3500,
+                    'num': 1
+                }, {
+                    'id': 4,
+                    'name': '锤子',
+                    'price': 3000,
+                    'num': 1
+                }
+                ]
+            }
+        },
+        template: `
+            <div class="cart">
+                <cart-header :name="name"></cart-header>
+                <cart-list :list="list" @deleteId="deleteItem($event)" @changeNum="changeNum($event)"></cart-list>
+                <cart-footer :list="list"></cart-footer>
+            </div>
+        `,
+        components: {
+            'cart-header': CartHeader,
+            'cart-list': CartList,
+            'cart-footer': CartFooter
+        },
+        methods: {
+            deleteItem(index) {
+                this.list.splice(index, 1);
+            },
+            changeNum(event) {
+                // let index = this.list.findIndex(event.index)
+                console.log(event)
+                this.list.some(item => {
+                    if (item.id === event.id){
+                        item.num = event.value
+                        return true;
+                    }
+                });
+            }
+        }
+    });
+    let vm = new Vue({
+        el: "#app",
+        data: {}
+    })
+</script>
+</body>
+</html>

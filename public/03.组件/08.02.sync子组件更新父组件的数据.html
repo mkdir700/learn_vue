@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--由子组件传递过来的值,使用$event接收-->
+    <menu-item :parr="parr" v-bind:title="parr" v-on:update:title="parr=$event"></menu-item>
+    <!-- .sync 修饰符简写-->
+    <menu-item :parr="parr" :title.sync="parr"></menu-item>
+    <h1>{{parr}}</h1>
+</div>
+<script>
+    Vue.component('menu-item', {
+        props: ['parr'],
+        template: `
+            <div>
+                <input type="text" :value="parr" @blur="changeItem($event)">
+            </div>
+        `,
+        methods: {
+            changeItem(event) {
+                /*将数据发送回父组件,让父组件更改数据*/
+                this.$emit('update:title', event.target.value);
+            }
+        }
+    })
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            'parr': 'Jim',
+        },
+        methods: {}
+    })
+</script>
+</body>
+</html>

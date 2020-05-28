@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div><button @click="handler">销毁</button></div>
+    <test-jim></test-jim>
+    <test-tom></test-tom>
+</div>
+<script>
+    Vue.component('test-tom', {
+        data() {
+            return {
+                num: 0
+            }
+        },
+        template: `
+            <div>
+                <div>Tom: {{num}}</div>
+                <button @click="handler">点击</button>
+            </div>
+        `,
+        methods: {
+            /* 3. 当此方法触发的时
+            * 通过事件监听中心,触发自定义的事件,并传递给参数值
+            *  */
+            handler() {
+                eventHub.$emit('jim-event', 2)
+            }
+        },
+        mounted() {
+            /* 2. 在模板挂载完成之后,事件中心监听此事件
+            * 自定义命名事件名为: tom-event
+            * 回调函数: 意思是,触发此事件时,会执行的方法
+            * */
+            eventHub.$on('tom-event', (value) => {
+                this.num += value;
+            })
+        }
+    })
+
+    Vue.component('test-jim', {
+        data() {
+            return {
+                num: 0
+            }
+        },
+        template: `
+            <div>
+                <div>Jim: {{num}}</div>
+                <button @click="handler">点击</button>
+            </div>
+        `,
+        methods: {
+            handler() {
+                eventHub.$emit('tom-event', 1)
+            }
+        },
+        mounted() {
+            eventHub.$on('jim-event', (value) => {
+                this.num += value;
+            })
+        }
+    })
+
+    /*1. 提供事件中心*/
+    let eventHub = new Vue({})
+
+    let vm = new Vue({
+        el: "#app",
+        data: {},
+        methods: {
+            handler() {
+                /* 4. 不带参数,则全部销毁*/
+                eventHub.$off()
+
+                /*指定销毁*/
+                eventHub.$off('tom-event')
+            }
+        }
+    })
+</script>
+</body>
+</html>
