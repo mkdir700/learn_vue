@@ -57,8 +57,18 @@
             * 通过判断布尔值就可以判断是否校验成功
             * */
             login() {
-                this.$refs.loginFormRef.validate(valid => {
-                    console.log(valid)
+                /*返回的promise, 使用async异步, await接收数据,可以去掉大部分不需要的数据*/
+                this.$refs.loginFormRef.validate(async valid => {
+                    // console.log(valid)
+                    if (!valid) return false;
+                    /*解构出data数据*/
+                    const {data: result} = await this.$http.post('login', this.form);
+                    console.log(result);
+                    if (result.meta.status !== 200){
+                        console.log('登录失败')
+                        return false;
+                    }
+                    console.log('登录成功')
                 });
             }
         }
