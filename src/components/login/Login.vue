@@ -11,8 +11,7 @@
                     <el-input prefix-icon="el-icon-user" v-model="form.username" prop="username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input prefix-icon="el-icon-key" v-model="form.password" prop="password"
-                              show-password></el-input>
+                    <el-input prefix-icon="el-icon-key" v-model="form.password" prop="password" show-password></el-input>
                 </el-form-item>
                 <el-form-item class="btns">
                     <el-button type="primary" @click="login">登录</el-button>
@@ -65,10 +64,10 @@
                     const {data: result} = await this.$http.post('login', this.form);
                     console.log(result);
                     if (result.meta.status !== 200){
-                        console.log('登录失败')
-                        return false;
+                        this.$message.error('登录失败')
+                        return false
                     }
-                    console.log('登录成功')
+                    this.$message.success('登录成功')
                 });
             }
         }
