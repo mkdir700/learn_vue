@@ -15,7 +15,7 @@
                               show-password></el-input>
                 </el-form-item>
                 <el-form-item class="btns">
-                    <el-button type="primary">登录</el-button>
+                    <el-button type="primary" @click="login">登录</el-button>
                     <el-button type="info" @click="resetForm">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -50,6 +50,16 @@
             /*重置表单函数*/
             resetForm() {
                 this.$refs.loginFormRef.resetFields();
+            },
+            /*表单的预验证
+            * validate(回调函数)
+            * 回调函数第一个参数是布尔值.第二个参数是一个对象
+            * 通过判断布尔值就可以判断是否校验成功
+            * */
+            login() {
+                this.$refs.loginFormRef.validate(valid => {
+                    console.log(valid)
+                });
             }
         }
     }
