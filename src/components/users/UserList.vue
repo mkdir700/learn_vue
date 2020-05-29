@@ -80,6 +80,17 @@
                                 </template>
                             </el-table-column>
                         </el-table>
+                        <div class="block">
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page.sync="queryParams.pagenum"
+                                    :page-sizes="[1, 2, 4]"
+                                    :page-size="queryParams.pagesize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="total">
+                            </el-pagination>
+                        </div>
                     </template>
                 </div>
             </div>
@@ -92,7 +103,7 @@
         name: "UserList",
         data() {
             return {
-                queryParams: {query: '', pagenum: '1', pagesize: '2'},
+                queryParams: {query: '', pagenum: 1, pagesize: 2},
                 userList: [],
                 total: 0
             }
@@ -106,12 +117,24 @@
                 if (res.meta.status !== 200) return this.$message.error('获取失败')
                 this.userList = res.data.users
                 this.total = res.data.total
-                console.log(this.userList)
+                // console.log(this.userList)
+            },
+            /*监听pagesize改变的事件*/
+            handleSizeChange(newPageSize) {
+                this.queryParams.pagesize = newPageSize
+                this.getUserList()
+            },
+            /*监听页码值改变的事件*/
+            handleCurrentChange(newPageNum) {
+                this.queryParams.pagenum = newPageNum
+                this.getUserList()
             }
         }
     }
 </script>
 
 <style lang="less" scoped>
-
+    .block {
+        margin-top: 15px;
+    }
 </style>
