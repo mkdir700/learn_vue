@@ -55,6 +55,7 @@
                                     label="状态">
                                 <template v-slot="scope">
                                     <el-switch
+                                            @change="userStateChange(scope.row)"
                                             v-model="scope.row.mg_state"
                                             active-color="#13ce66"
                                             inactive-color="#ff4949">
@@ -66,11 +67,11 @@
                                     label="操作">
                                 <template v-slot="scope">
                                     <!--编辑按钮-->
-                                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                                    <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
                                         <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
                                     </el-tooltip>
                                     <!--删除按钮-->
-                                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                                    <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
                                         <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
                                     </el-tooltip>
                                     <!--分配权限-->
@@ -128,6 +129,16 @@
             handleCurrentChange(newPageNum) {
                 this.queryParams.pagenum = newPageNum
                 this.getUserList()
+            },
+            /*监听switch开关状态的改变*/
+            async userStateChange(userinfo) {
+                const {data: res} = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
+                if (res.meta.status !== 200) {
+                    userinfo.mg_state = !userinfo.mg_state
+                    return this.$message.error('状态更改失败')
+                }
+                this.$message.success('状态更新成功')
+                return userinfo
             }
         }
     }
