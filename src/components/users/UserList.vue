@@ -28,6 +28,8 @@
                                 :data="userList"
                                 stripe
                                 style="width: 100%">
+                            <!--索引列-->
+                            <el-table-column type="index" label="#"></el-table-column>
                             <el-table-column
                                     prop="username"
                                     label="姓名"
