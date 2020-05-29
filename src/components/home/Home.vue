@@ -10,47 +10,38 @@
         <!--页面主体-->
         <el-container>
             <!--主体左侧-->
-            <el-aside width="200px">
+            <el-aside :width="isCollapse ? '64px':'300px'">
                 <!--侧边栏菜单-->
+                <div class="toggle-button" @click="toggleCollapse">
+                    |||
+                </div>
                 <el-menu
+                        unique-opened
+                        :collapse="isCollapse"
+                        :collapse-transition="false"
                         background-color="#545c64"
                         text-color="#fff"
-                        active-text-color="#ffd04b">
-                    <el-submenu index="1">
+                        active-text-color="#409eff">
+                    <el-submenu
+                            :index="item.id+''"
+                            v-for="item in menuList"
+                            :key="item.id">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <i :class="iconsObj[item.id]"></i>
+                            <span>{{item.authName}}</span>
                         </template>
                         <el-menu-item-group>
-                            <template slot="title">分组一</template>
-                            <el-menu-item index="1-1">选项1</el-menu-item>
-                            <el-menu-item index="1-2">选项2</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <span>订单管理</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="2-1">选项1</el-menu-item>
-                            <el-menu-item index="2-2">选项1</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="3">
-                        <template slot="title">
-                            <span>订单管理</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="2-1">选项1</el-menu-item>
-                            <el-menu-item index="2-2">选项1</el-menu-item>
+                            <el-menu-item :index="subItem.id + ''" v-for="subItem in item.children"
+                                          :key="subItem.id">
+                                <i class="el-icon-menu"></i>
+                                {{subItem.authName}}
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
             </el-aside>
             <!--主体右侧-->
             <el-main>Main</el-main>
-            <!--底部-->
-            <el-footer>Footer</el-footer>
         </el-container>
     </el-container>
 </template>
@@ -58,12 +49,40 @@
 <script>
     export default {
         name: "Home",
+        data() {
+            return {
+                menuList: [],
+                iconsObj: {
+                    '125': 'el-icon-user-solid',
+                    '103': 'el-icon-info',
+                    '101': 'el-icon-s-goods',
+                    '102': 'el-icon-s-order',
+                    '145': 'el-icon-s-claim'
+                },
+                isCollapse: false,
+            }
+        },
+        created() {
+            this.getMenuList()
+        },
         methods: {
             logout() {
                 /*清空*/
                 window.sessionStorage.clear()
                 /*跳转到登录页面*/
                 this.$router.push({name: 'login'})
+            },
+            async getMenuList() {
+                /*获取所有的菜单*/
+                const {data: res} = await this.$http.get('menus')
+                if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+                this.menuList = res.data
+                // console.log(res)
+                // console.log(this.menuList)
+            },
+            /*切换菜单的折叠与展开*/
+            toggleCollapse() {
+                this.isCollapse = !this.isCollapse
             }
         }
     }
@@ -99,9 +118,22 @@
 
     .el-aside {
         background-color: #333744;
+        .el-menu {
+            border-right: none;
+        }
     }
 
     .el-main {
         background-color: #eaedf1;
+    }
+
+    .toggle-button {
+        background-color: #4a5064;
+        font-size: 10px;
+        line-height: 24px;
+        color: #fff;
+        text-align: center;
+        letter-spacing: 0.2em;
+        cursor: pointer;
     }
 </style>
