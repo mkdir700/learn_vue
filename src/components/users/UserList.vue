@@ -102,8 +102,27 @@
                 width="50%"
                 center>
             <!--内容主体区-->
-            <span>需要注意的是内容是默认不居中的</span>
+            <el-form
+                    :model="addForm"
+                    :rules="addFormRules"
+                    ref="addFormRef"
+                    :status-icon="true"
+                    label-width="70px">
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="addForm.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="addForm.password"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="addForm.email"></el-input>
+                </el-form-item>
+                <el-form-item label="手机" prop="mobile">
+                    <el-input v-model="addForm.mobile"></el-input>
+                </el-form-item>
+            </el-form>
             <span slot="footer" class="dialog-footer">
+                <el-button type="info" @click="$refs.addFormRef.resetFields()">重置</el-button>
             <el-button @click="addDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
             </span>
@@ -120,7 +139,32 @@
                 userList: [],
                 total: 0,
                 // 控制添加用户框的显示与隐藏
-                addDialogVisible: false
+                addDialogVisible: false,
+                // 添加用户的表单数据
+                addForm: {
+                    username: '',
+                    password: '',
+                    email: '',
+                    mobile: ''
+                },
+                /*添加表单的验证规则对象*/
+                addFormRules:{
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {min: 3, max: 16, message: '用户名长度3到16位之间', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 6, max: 16, message: '密码长度6到16位之间', trigger: 'blur'}
+                    ],
+                    email: [
+                        {required: true, message: '请输入邮箱', trigger: 'blur'},
+                        {type: 'email', message: '请输入正确的邮箱', trigger: ['blur', 'change']}
+                    ],
+                    mobile: [
+                        {required: true, message: '请输入手机号码', trigger: 'blur'},
+                    ]
+                }
             }
         },
         created() {
