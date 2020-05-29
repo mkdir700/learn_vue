@@ -62,7 +62,22 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                    width="180px"
                                     label="操作">
+                                <template v-slot="scope">
+                                    <!--编辑按钮-->
+                                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                                        <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+                                    </el-tooltip>
+                                    <!--删除按钮-->
+                                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                                    </el-tooltip>
+                                    <!--分配权限-->
+                                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                                        <el-button type="warning" icon="el-icon-delete" size="mini"></el-button>
+                                    </el-tooltip>
+                                </template>
                             </el-table-column>
                         </el-table>
                     </template>

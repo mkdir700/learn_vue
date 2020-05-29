@@ -20,9 +20,11 @@ import {
     Row,
     Table,
     TableColumn,
-    Switch
+    Switch,
+    Tooltip
 } from 'element-ui'
 
+Vue.use(Tooltip)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
