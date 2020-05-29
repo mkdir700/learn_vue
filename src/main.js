@@ -13,12 +13,19 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 /*配置axios*/
 import axios from 'axios'
+
 axios.defaults.baseURL = "http://127.0.0.1:9999/api/private/v1/"
 Vue.prototype.$http = axios
+
+/*配置axios请求拦截*/
+axios.interceptors.request.use(config => {
+    config.headers.Authorization = window.sessionStorage.getItem('token')
+    return config
+})
 
 Vue.config.productionTip = false
 
 new Vue({
-  router,
-  render: h => h(App),
+    router,
+    render: h => h(App),
 }).$mount('#app')
