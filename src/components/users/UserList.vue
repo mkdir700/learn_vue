@@ -13,12 +13,13 @@
                 <div style="margin-top: 15px;">
                     <el-row :gutter="20">
                         <el-col :span="7">
-                            <el-input placeholder="请输入内容" v-model="queryParams.query" class="input-with-select" clearable @clear="search" @change="search">
+                            <el-input placeholder="请输入内容" v-model="queryParams.query" class="input-with-select"
+                                      clearable @clear="search" @change="search">
                                 <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
                             </el-input>
                         </el-col>
                         <el-col :span="5">
-                            <el-button type="primary">添加</el-button>
+                            <el-button type="primary" @click="addDialogVisible=true">添加</el-button>
                         </el-col>
                     </el-row>
                     <template>
@@ -95,6 +96,18 @@
                 </div>
             </div>
         </el-card>
+        <el-dialog
+                title="添加用户"
+                :visible.sync="addDialogVisible"
+                width="50%"
+                center>
+            <!--内容主体区-->
+            <span>需要注意的是内容是默认不居中的</span>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -105,7 +118,9 @@
             return {
                 queryParams: {query: '', pagenum: 1, pagesize: 2},
                 userList: [],
-                total: 0
+                total: 0,
+                // 控制添加用户框的显示与隐藏
+                addDialogVisible: false
             }
         },
         created() {
