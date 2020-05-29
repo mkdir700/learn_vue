@@ -9,13 +9,12 @@
         <!--卡片-->
         <el-card>
             <div slot="header" class="clearfix">
-                <span>卡片名称</span>
                 <!--搜索与添加-->
                 <div style="margin-top: 15px;">
                     <el-row :gutter="20">
                         <el-col :span="7">
-                            <el-input placeholder="请输入内容" class="input-with-select">
-                                <el-button slot="append" icon="el-icon-search"></el-button>
+                            <el-input placeholder="请输入内容" v-model="queryParams.query" class="input-with-select" clearable @clear="getUserList" @change="getUserList">
+                                <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
                             </el-input>
                         </el-col>
                         <el-col :span="5">
