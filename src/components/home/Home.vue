@@ -16,6 +16,7 @@
                     |||
                 </div>
                 <el-menu
+                        router
                         unique-opened
                         :collapse="isCollapse"
                         :collapse-transition="false"
@@ -31,8 +32,10 @@
                             <span>{{item.authName}}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item :index="subItem.id + ''" v-for="subItem in item.children"
-                                          :key="subItem.id">
+                            <el-menu-item
+                                    :index="'/'+subItem.path"
+                                    v-for="subItem in item.children"
+                                    :key="subItem.id">
                                 <i class="el-icon-menu"></i>
                                 {{subItem.authName}}
                             </el-menu-item>
@@ -120,6 +123,7 @@
 
     .el-aside {
         background-color: #333744;
+
         .el-menu {
             border-right: none;
         }
