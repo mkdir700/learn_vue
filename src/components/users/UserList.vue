@@ -22,6 +22,42 @@
                             <el-button type="primary">添加</el-button>
                         </el-col>
                     </el-row>
+                    <template>
+                        <el-table
+                                border
+                                :data="userList"
+                                stripe
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="username"
+                                    label="姓名"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="mobile"
+                                    label="电话">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="email"
+                                    label="邮箱">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="create_time"
+                                    label="创建时间">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="role_name"
+                                    label="角色">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="mg_state"
+                                    label="状态">
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作">
+                            </el-table-column>
+                        </el-table>
+                    </template>
                 </div>
             </div>
         </el-card>
