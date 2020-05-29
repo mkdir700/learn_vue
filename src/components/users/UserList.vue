@@ -13,7 +13,7 @@
                 <div style="margin-top: 15px;">
                     <el-row :gutter="20">
                         <el-col :span="7">
-                            <el-input placeholder="请输入内容" v-model="queryParams.query" class="input-with-select" clearable @clear="getUserList" @change="getUserList">
+                            <el-input placeholder="请输入内容" v-model="queryParams.query" class="input-with-select" clearable @clear="search" @change="search">
                                 <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
                             </el-input>
                         </el-col>
@@ -138,6 +138,10 @@
                 }
                 this.$message.success('状态更新成功')
                 return userinfo
+            },
+            search() {
+                this.queryParams.pagenum = 1
+                this.getUserList()
             }
         }
     }
