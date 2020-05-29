@@ -16,6 +16,7 @@
                     |||
                 </div>
                 <el-menu
+                        :default-active="$route.path"
                         router
                         unique-opened
                         :collapse="isCollapse"
