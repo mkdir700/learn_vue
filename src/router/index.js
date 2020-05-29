@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from "@/components/login/Login";
 import Home from "@/components/home/Home";
+import Welcome from "@/components/home/Welcome";
 
 Vue.use(Router)
 
@@ -9,7 +10,15 @@ const router = new Router({
     routes: [
         {path: '/', redirect: '/login'},
         {path: '/login', name: 'login', component: Login},
-        {path: '/home', name: 'home', component: Home}
+        {
+            path: '/home',
+            name: 'home',
+            component: Home,
+            redirect: {name: "welcome"},
+            children: [
+                {path: 'welcome', name: 'welcome', component: Welcome}
+            ]
+        }
     ]
 })
 
@@ -17,7 +26,7 @@ const router = new Router({
 * from 从两个路径跳转而来
 * next是一个函数，表示放行
 * 直接next表示放行，next()表示强制跳转到括号内的路径*/
-router.beforeEach((to, from, next)=>{
+router.beforeEach((to, from, next) => {
     /*通过路径来判断*/
     // if (to.path === '/login') return next()
     /*通过命名来判断*/
