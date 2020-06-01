@@ -134,6 +134,16 @@
     export default {
         name: "UserList",
         data() {
+            /*1. 自定义表单验证规则*/
+            let checkMobile = (rule, value, callback) => {
+                //    验证手机号码的正则
+                const regMobile = /^1[3456789]\d{9}$/
+                if (regMobile.test(value)) {
+                    return callback()
+                } else {
+                    return callback(new Error('请输入正确的手机号码'))
+                }
+            }
             return {
                 queryParams: {query: '', pagenum: 1, pagesize: 2},
                 userList: [],
@@ -148,7 +158,7 @@
                     mobile: ''
                 },
                 /*添加表单的验证规则对象*/
-                addFormRules:{
+                addFormRules: {
                     username: [
                         {required: true, message: '请输入用户名', trigger: 'blur'},
                         {min: 3, max: 16, message: '用户名长度3到16位之间', trigger: 'blur'}
@@ -161,8 +171,10 @@
                         {required: true, message: '请输入邮箱', trigger: 'blur'},
                         {type: 'email', message: '请输入正确的邮箱', trigger: ['blur', 'change']}
                     ],
+                    // 2. 设置validator
                     mobile: [
                         {required: true, message: '请输入手机号码', trigger: 'blur'},
+                        {validator: checkMobile, trigger: 'blur'}
                     ]
                 }
             }

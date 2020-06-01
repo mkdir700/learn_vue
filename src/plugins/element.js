@@ -23,9 +23,11 @@ import {
     Switch,
     Tooltip,
     Pagination,
-    Dialog
+    Dialog,
+    Link
 } from 'element-ui'
 
+Vue.use(Link)
 Vue.use(Dialog)
 Vue.use(Pagination)
 Vue.use(Tooltip)
