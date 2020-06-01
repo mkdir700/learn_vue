@@ -24,9 +24,11 @@ import {
     Tooltip,
     Pagination,
     Dialog,
-    Link
+    Link,
+    Popconfirm
 } from 'element-ui'
 
+Vue.use(Popconfirm)
 Vue.use(Link)
 Vue.use(Dialog)
 Vue.use(Pagination)

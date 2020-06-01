@@ -73,7 +73,12 @@
                                     </el-tooltip>
                                     <!--删除按钮-->
                                     <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-                                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                                        <el-popconfirm
+                                                @onConfirm="deleteRow(scope.row.id)"
+                                                title="您确定删除吗?">
+                                            <el-button type="danger" icon="el-icon-delete" size="mini"
+                                                       slot="reference"></el-button>
+                                        </el-popconfirm>
                                     </el-tooltip>
                                     <!--分配权限-->
                                     <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
@@ -299,6 +304,14 @@
                     this.editDialogVisible = false
                     await this.getUserList()
                 })
+            },
+            async deleteRow(id) {
+                const {data: res} = await this.$http.delete('users/' + id)
+                if (res.meta.status !== 200) return this.$message.error('删除失败')
+                this.$message.success('删除成功')
+                /*重新获取第一页数据*/
+                this.queryParams.pagenum = 1
+                await this.getUserList()
             }
         }
     }
