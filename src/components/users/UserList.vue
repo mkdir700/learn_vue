@@ -221,10 +221,17 @@
             },
             /*点击按钮添加新用户*/
             addUser() {
-                this.$refs.addFormRef.validate(valid => {
+                this.$refs.addFormRef.validate(async valid => {
                     /*验证不通过*/
                     if (!valid) return false
                     /*通过api发起请求*/
+                    const {data: res} = await this.$http.post('users', this.addForm)
+                    if (res.meta.status !== 201) return this.$message.error('添加失败')
+                    this.$message.success('添加用户成功')
+                    // 添加成功后,关闭对话框
+                    this.addDialogVisible = false
+                    // 用户添加数据后,更新列表
+                    await this.getUserList()
                 })
             }
         }
