@@ -68,7 +68,8 @@
                                 <template v-slot="scope">
                                     <!--编辑按钮-->
                                     <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-                                        <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+                                        <el-button type="primary" icon="el-icon-edit" size="mini"
+                                                   @click="showEditDialog(scope.row)"></el-button>
                                     </el-tooltip>
                                     <!--删除按钮-->
                                     <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
@@ -96,12 +97,12 @@
                 </div>
             </div>
         </el-card>
+        <!--添加用户的对话框-->
         <el-dialog
                 @close="AddDialogClosed($refs.addFormRef)"
                 title="添加用户"
                 :visible.sync="addDialogVisible"
-                width="50%"
-                center>
+                width="50%">
             <!--内容主体区-->
             <el-form
                     :model="addForm"
@@ -128,6 +129,31 @@
                 <el-button type="primary" @click="addUser">确 定</el-button>
             </span>
         </el-dialog>
+        <!--修改用户的对话框-->
+        <el-dialog
+                title="修改用户信息"
+                :visible.sync="editDialogVisible"
+                width="50%">
+            <el-form
+                    :status-icon="true"
+                    :model="editForm"
+                    :rules="editFormRules"
+                    label-width="100px">
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="editForm.username" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="editForm.email"></el-input>
+                </el-form-item>
+                <el-form-item label="电话号码" prop="mobile">
+                    <el-input v-model="editForm.mobile"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="editDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -151,10 +177,17 @@
                 total: 0,
                 // 控制添加用户框的显示与隐藏
                 addDialogVisible: false,
+                // 控制编辑用户框的显示与隐藏
+                editDialogVisible: false,
                 // 添加用户的表单数据
                 addForm: {
                     username: '',
                     password: '',
+                    email: '',
+                    mobile: ''
+                },
+                editForm: {
+                    username: '',
                     email: '',
                     mobile: ''
                 },
@@ -173,6 +206,16 @@
                         {type: 'email', message: '请输入正确的邮箱', trigger: ['blur', 'change']}
                     ],
                     // 2. 设置validator
+                    mobile: [
+                        {required: true, message: '请输入手机号码', trigger: 'blur'},
+                        {validator: checkMobile, trigger: 'blur'}
+                    ]
+                },
+                editFormRules: {
+                    email: [
+                        {required: true, message: '请输入邮箱', trigger: 'blur'},
+                        {type: 'email', message: '请输入正确的邮箱', trigger: ['blur', 'change']}
+                    ],
                     mobile: [
                         {required: true, message: '请输入手机号码', trigger: 'blur'},
                         {validator: checkMobile, trigger: 'blur'}
@@ -233,6 +276,13 @@
                     // 用户添加数据后,更新列表
                     await this.getUserList()
                 })
+            },
+            /*展示编辑用户的对话框*/
+            showEditDialog(data) {
+                this.editForm.username = data.username
+                this.editForm.email = data.email
+                this.editForm.mobile = data.mobile
+                this.editDialogVisible = true
             }
         }
     }
