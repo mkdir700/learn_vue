@@ -125,7 +125,7 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="info" @click="$refs.addFormRef.resetFields()">重置</el-button>
                 <el-button @click="addDialogVisible=false">取 消</el-button>
-                <el-button type="primary" @click="addDialogVisible=false">确 定</el-button>
+                <el-button type="primary" @click="addUser">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -218,6 +218,14 @@
             /*当对话框关闭时,触发的函数*/
             AddDialogClosed(addFormRef) {
                 addFormRef.resetFields()
+            },
+            /*点击按钮添加新用户*/
+            addUser() {
+                this.$refs.addFormRef.validate(valid => {
+                    /*验证不通过*/
+                    if (!valid) return false
+                    /*通过api发起请求*/
+                })
             }
         }
     }
