@@ -97,6 +97,7 @@
             </div>
         </el-card>
         <el-dialog
+                @close="AddDialogClosed($refs.addFormRef)"
                 title="添加用户"
                 :visible.sync="addDialogVisible"
                 width="50%"
@@ -123,8 +124,8 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button type="info" @click="$refs.addFormRef.resetFields()">重置</el-button>
-            <el-button @click="addDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+                <el-button @click="addDialogVisible=false">取 消</el-button>
+                <el-button type="primary" @click="addDialogVisible=false">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -213,6 +214,10 @@
             search() {
                 this.queryParams.pagenum = 1
                 this.getUserList()
+            },
+            /*当对话框关闭时,触发的函数*/
+            AddDialogClosed(addFormRef) {
+                addFormRef.resetFields()
             }
         }
     }
