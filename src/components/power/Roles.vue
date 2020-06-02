@@ -14,21 +14,40 @@
             </el-row>
             <el-table :data="rolesList" border>
                 <el-table-column type="expand" v-slot="scope">
-                    <el-row :class="['bdbottom', {'bdtop': i1==0}, 'vcenter']" v-for="(item, i1) in scope.row.children" :key="item.id">
+                    <el-row :class="['bdbottom', {'bdtop': i1==0}, 'vcenter']" v-for="(item, i1) in scope.row.children"
+                            :key="item.id">
                         <!--一级权限-->
                         <el-col :span="5">
-                            <el-tag type="primary">{{item.authName}}</el-tag>
+                            <el-tag type="primary"
+                                    closable
+                                    @close="removeRightById(scope.row, item.id)">
+                                {{item.authName}}
+                            </el-tag>
                             <i class="el-icon-arrow-right"></i>
                         </el-col>
-                        <!--二级权限-->
+                        <!--二 三级权限-->
                         <el-col :span="19">
-                            <el-row :class="['bdtop', {'bdtop': i2!=0}, 'vcenter']" v-for="(item2, i2) in item.children" :key="item2.id">
+                            <el-row :class="['bdtop', {'bdtop': i2!=0}, 'vcenter']"
+                                    v-for="(item2, i2) in item.children"
+                                    :key="item2.id">
                                 <el-col :span="6">
-                                    <el-tag type="success">{{item2.authName}}</el-tag>
+                                    <el-tag
+                                            closable
+                                            type="success"
+                                            @close="removeRightById(scope.row, item2.id)">
+                                        {{item2.authName}}
+                                    </el-tag>
                                     <i class="el-icon-arrow-right"></i>
                                 </el-col>
                                 <el-col :span="13">
-                                    <el-tag closable @close="removeRightById" type="warning" v-for="(item3, i3) in item2.children" :key="item3.id">{{item3.authName}}</el-tag>
+                                    <el-tag
+                                            closable
+                                            @close="removeRightById(scope.row, item3.id)"
+                                            type="warning"
+                                            v-for="(item3, i3) in item2.children"
+                                            :key="item3.id">
+                                        {{item3.authName}}
+                                    </el-tag>
                                 </el-col>
                             </el-row>
                         </el-col>
@@ -68,15 +87,24 @@
                 console.log(res.data)
             },
             /*根据id删除对象的权限*/
-            removeRightById() {
+            removeRightById(row, id) {
                 /**/
                 this.$confirm('此操作将取消用户权限, 是否继续删除', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(()=>{
-                    this.$message.success('删除成功')
-                }).catch(()=>{
+                }).then(() => {
+                    /*roles/:roleId/rights/:rightId*/
+                    this.$http.delete(`roles/${row.id}/rights/${id}`).then(data => {
+                        // console.log(data.data.data)
+                        /*请求成功后,会获取当前最新的权限列表,将值赋值给row,就不用刷新整个页面去渲染数据了*/
+                        row.children = data.data.data
+                        this.$message.success('删除成功')
+                    }).catch(error => {
+                        console.log(error)
+                        this.$message.error('删除失败')
+                    })
+                }).catch(() => {
                     this.$message.info('取消删除')
                 })
             }
@@ -88,12 +116,15 @@
     .el-tag {
         margin: 7px;
     }
+
     .bdtop {
         border-top: 1px solid #eeeeee;
     }
+
     .bdbottom {
         border-bottom: 1px solid #eeeeee;
     }
+
     .vcenter {
         display: flex;
         align-items: center;
