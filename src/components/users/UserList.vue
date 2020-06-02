@@ -67,9 +67,10 @@
                                     label="操作">
                                 <template v-slot="scope">
                                     <!--编辑按钮-->
+                                    <el-button type="primary" icon="el-icon-edit" size="mini"
+                                               @click="showEditDialog(scope.row)"></el-button>
                                     <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-                                        <el-button type="primary" icon="el-icon-edit" size="mini"
-                                                   @click="showEditDialog(scope.row)"></el-button>
+
                                     </el-tooltip>
                                     <!--删除按钮-->
                                     <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
@@ -162,6 +163,7 @@
             </span>
         </el-dialog>
         <el-dialog
+                @close="closedSetRoleDialog"
                 :visible.sync="setRoleDialogVisible"
                 width="50%"
                 title="修改角色">
@@ -180,7 +182,7 @@
             </template>
             <span slot="footer" class="dialog-footer">
             <el-button @click="setRoleDialogVisible=false">取 消</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -344,17 +346,35 @@
                 this.queryParams.pagenum = 1
                 await this.getUserList()
             },
+            //获取所有角色的数据列表
             showSetRoleDialog(userInfo) {
-                //获取所有角色的数据列表
                 this.$http.get('roles').then(res => {
                     //角色列表
                     this.rolesList = res.data.data
                 }).catch(() => {
                     this.$message.error('获取角色列表失败')
                 })
-                this.setRoleDialogVisible = true
                 this.userInfo = userInfo
-
+                this.setRoleDialogVisible = true
+            },
+            //点击按钮分配角色
+            async saveRoleInfo() {
+                if (!this.selectedRoleId) {
+                    this.$message.warning('角色不能为空')
+                    return false
+                }
+                this.$http.put(`users/${this.userInfo.id}/role`, {'rid': this.selectedRoleId}).then(res => {
+                    this.$message.success('修改成功')
+                }).catch(error => {
+                    console.log(error)
+                    this.$message.error('修改失败')
+                })
+                this.setRoleDialogVisible=false
+                this.getUserList()
+            },
+            //关闭角色分配对话框时触发
+            closedSetRoleDialog() {
+                this.selectedRoleId=''
             }
         }
     }
