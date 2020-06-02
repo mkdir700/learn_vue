@@ -82,7 +82,8 @@
                                     </el-tooltip>
                                     <!--分配权限-->
                                     <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-                                        <el-button type="warning" icon="el-icon-delete" size="mini"></el-button>
+                                        <el-button @click="showSetRoleDialog(scope.row)" type="warning"
+                                                   icon="el-icon-delete" size="mini"></el-button>
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
@@ -160,6 +161,17 @@
             <el-button type="primary" @click="editUserInfo">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+                :visible.sync="setRoleDialogVisible"
+                width="50%"
+                title="修改角色">
+            <p>当前用户: {{userInfo.username}}</p>
+            <p>当前角色: {{userInfo.role_name}}</p>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="setRoleDialogVisible=false">取 消</el-button>
+            <el-button type="primary">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -227,7 +239,13 @@
                         {required: true, message: '请输入手机号码', trigger: 'blur'},
                         {validator: checkMobile, trigger: 'blur'}
                     ]
-                }
+                },
+                //显示/隐藏角色分配对话框
+                setRoleDialogVisible: false,
+                //需要被分配角色的用户信息
+                userInfo: {},
+                //角色列表
+                rolesList: []
             }
         },
         created() {
@@ -312,6 +330,18 @@
                 /*重新获取第一页数据*/
                 this.queryParams.pagenum = 1
                 await this.getUserList()
+            },
+            showSetRoleDialog(userInfo) {
+                //获取所有角色的数据列表
+                this.$http.get('roles').then(res => {
+                    //角色列表
+                    this.rolesList = res.data.data
+                }).catch(() => {
+                    this.$message.error('获取角色列表失败')
+                })
+                this.setRoleDialogVisible = true
+                this.userInfo = userInfo
+
             }
         }
     }
