@@ -76,17 +76,17 @@
                     @close="closedRightsDialog"
                     width="50%">
                 <el-tree
+                        ref="treeRef"
                         :data="rightsList"
                         default-expand-all
                         show-checkbox
                         node-key="id"
-                        :default-expanded-keys="[2, 3]"
                         :default-checked-keys="defKeys"
                         :props="defaultProps">
                 </el-tree>
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="rightsDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="rightsDialogVisible = false">确 定</el-button>
+                    <el-button @click="rightsDialogVisible=false">取 消</el-button>
+                    <el-button type="primary" @click="allotRights()">确 定</el-button>
                 </span>
             </el-dialog>
         </template>
@@ -108,13 +108,16 @@
                     label: 'authName'
                 },
                 /*默认选中的节点 数组*/
-                defKeys: []
+                defKeys: [],
+                //打开对话框,当前角色id
+                roleId: ''
             }
         },
         created() {
             this.getRolesList()
         },
         methods: {
+            /*获取权限列表*/
             async getRolesList() {
                 const {data: res} = await this.$http.get('roles')
                 if (res.meta.status !== 200) return this.$message.error('获取权限列表失败')
@@ -152,6 +155,8 @@
                     // console.log(this.rightsList);
                 })
                 this.getLeafKeys(role, this.defKeys)
+                //在打开对话框时,先保存当前角色的id到data中
+                this.roleId = role.id
                 this.rightsDialogVisible = true
             },
             /*通过递归的形式获取角色下所有三级权限的id,并保存到数组中*/
@@ -164,7 +169,29 @@
             },
             /*当对话框关闭时,清空defKeys*/
             closedRightsDialog() {
-                this.defKeys = []
+                this.defKeys = [];
+            },
+            //修改当前角色权限方法
+            async allotRights() {
+                const keys = [
+                    ...this.$refs.treeRef.getCheckedNodes(false, true),
+                    // ...this.$refs.treeRef.getHalfCheckedNodes()
+                ]
+                let k = []
+                keys.forEach(item => {
+                    return k.push(item.id)
+                })
+                const keysStr = k.join(',')
+                console.log(keysStr)
+                this.$http.post(`roles/${this.roleId}/rights`, {rids: keysStr}).then(res => {
+                    console.log(res.data)
+                    this.$message.success('修改成功')
+                }).catch(error => {
+                    console.log(error)
+                    this.$message.error('修改失败')
+                })
+                await this.getRolesList()
+                this.rightsDialogVisible=false
             }
         }
     }
