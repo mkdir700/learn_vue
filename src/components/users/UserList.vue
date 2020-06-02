@@ -167,6 +167,17 @@
                 title="修改角色">
             <p>当前用户: {{userInfo.username}}</p>
             <p>当前角色: {{userInfo.role_name}}</p>
+            <span>分配角色: </span>
+            <template>
+                <el-select v-model="selectedRoleId" placeholder="请选择">
+                    <el-option
+                            v-for="item in rolesList"
+                            :key="item.id"
+                            :label="item.roleName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </template>
             <span slot="footer" class="dialog-footer">
             <el-button @click="setRoleDialogVisible=false">取 消</el-button>
             <el-button type="primary">确 定</el-button>
@@ -245,7 +256,9 @@
                 //需要被分配角色的用户信息
                 userInfo: {},
                 //角色列表
-                rolesList: []
+                rolesList: [],
+                //已选中的角色id值
+                selectedRoleId: ''
             }
         },
         created() {

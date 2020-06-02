@@ -28,9 +28,13 @@ import {
     Popconfirm,
     Tag,
     MessageBox,
-    Tree
+    Tree,
+    Select,
+    Option
 } from 'element-ui'
 
+Vue.use(Select)
+Vue.use(Option)
 Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Popconfirm)
