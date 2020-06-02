@@ -26,7 +26,8 @@ import {
     Dialog,
     Link,
     Popconfirm,
-    Tag
+    Tag,
+    MessageBox
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -56,3 +57,4 @@ Vue.use(TableColumn)
 Vue.use(Table)
 Vue.use(Switch)
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
