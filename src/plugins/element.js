@@ -25,9 +25,11 @@ import {
     Pagination,
     Dialog,
     Link,
-    Popconfirm
+    Popconfirm,
+    Tag
 } from 'element-ui'
 
+Vue.use(Tag)
 Vue.use(Popconfirm)
 Vue.use(Link)
 Vue.use(Dialog)
