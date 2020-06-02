@@ -60,11 +60,36 @@
                     <template v-slot="scope">
                         <el-button size="mini" icon="el-icon-edit" type="primary">编辑</el-button>
                         <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
-                        <el-button size="mini" icon="el-icon-star-off" type="warning">分配权限</el-button>
+                        <el-button size="mini"
+                                   icon="el-icon-star-off"
+                                   type="warning"
+                                   @click="showSetRightDialog(scope.row)">分配权限
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </el-card>
+        <template>
+            <el-dialog
+                    title="分配权限"
+                    :visible.sync="rightsDialogVisible"
+                    @close="closedRightsDialog"
+                    width="50%">
+                <el-tree
+                        :data="rightsList"
+                        default-expand-all
+                        show-checkbox
+                        node-key="id"
+                        :default-expanded-keys="[2, 3]"
+                        :default-checked-keys="defKeys"
+                        :props="defaultProps">
+                </el-tree>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="rightsDialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="rightsDialogVisible = false">确 定</el-button>
+                </span>
+            </el-dialog>
+        </template>
     </div>
 </template>
 
@@ -73,7 +98,17 @@
         name: "Roles",
         data() {
             return {
-                rolesList: []
+                rolesList: [],
+                /*控制权限对话框的显示与隐藏*/
+                rightsDialogVisible: false,
+                rightsList: [],
+                /*定义结构,children是子分类的名字, label显示单个属性的属性名*/
+                defaultProps: {
+                    children: 'children',
+                    label: 'authName'
+                },
+                /*默认选中的节点 数组*/
+                defKeys: []
             }
         },
         created() {
@@ -84,7 +119,7 @@
                 const {data: res} = await this.$http.get('roles')
                 if (res.meta.status !== 200) return this.$message.error('获取权限列表失败')
                 this.rolesList = res.data
-                console.log(res.data)
+                // console.log(res.data)
             },
             /*根据id删除对象的权限*/
             removeRightById(row, id) {
@@ -107,6 +142,29 @@
                 }).catch(() => {
                     this.$message.info('取消删除')
                 })
+            },
+            /*展示权限分配的对话框*/
+            showSetRightDialog(role) {
+                /*获取所有权限的数据*/
+                this.$http.get('rights/tree').then(res => {
+                    /*获取到的权限数据,保存到data*/
+                    this.rightsList = res.data.data;
+                    // console.log(this.rightsList);
+                })
+                this.getLeafKeys(role, this.defKeys)
+                this.rightsDialogVisible = true
+            },
+            /*通过递归的形式获取角色下所有三级权限的id,并保存到数组中*/
+            getLeafKeys(node, arr) {
+                /*如果当前节点不包含,child属性,则为三级节点*/
+                if (!node.children) {
+                    return arr.push(node.id)
+                }
+                node.children.forEach(item => this.getLeafKeys(item, arr))
+            },
+            /*当对话框关闭时,清空defKeys*/
+            closedRightsDialog() {
+                this.defKeys = []
             }
         }
     }

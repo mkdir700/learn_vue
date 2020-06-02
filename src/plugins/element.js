@@ -27,10 +27,12 @@ import {
     Link,
     Popconfirm,
     Tag,
-    MessageBox
+    MessageBox,
+    Tree
 } from 'element-ui'
 
 Vue.use(Tag)
+Vue.use(Tree)
 Vue.use(Popconfirm)
 Vue.use(Link)
 Vue.use(Dialog)
